@@ -57,6 +57,7 @@ public class Population
     public List<float> geneMinValues = new();
     public List<float> geneMaxValues = new();
     public List<Genome> population = new();
+    public List<bool> selected = new();
 
     public void InitializeGeneMinValues(List<float> geneMinValues)
     {
@@ -77,6 +78,16 @@ public class Population
         {
             population.Add(CreateGenome());
         }
+        MakeSelections();
+    }
+    public void MakeSelections()
+    {
+        selected = new List<bool>(new bool[population.Count]);
+    }
+
+    public bool IsSelected(Genome genome)
+    {
+        return selected[population.IndexOf(genome)];
     }
 
     public Genome CreateGenome()
@@ -91,24 +102,43 @@ public class Population
 
     public Genome Select(List<Genome> excluded)
     {
-        return population
-            .Except(excluded)
-            .OrderByDescending(genome => genome.fitness)
-            .First();
+        // return population
+        //     .Except(excluded)
+        //     .OrderByDescending(genome => genome.fitness)
+        //     .First();
         // TODO: Implement a better selection algorithm
+
+        List<Genome> selectedGenomes = population
+            .Where(genome => !excluded.Contains(genome))
+            .ToList();
+
+        float totalFitness = selectedGenomes.Sum(genome => genome.fitness);
+        float randomValue = UnityEngine.Random.Range(0f, totalFitness);
+        float currentFitness = 0;
+        foreach (Genome genome in selectedGenomes)
+        {
+            currentFitness += genome.fitness;
+            if (currentFitness >= randomValue)
+            {
+                return genome;
+            }
+        }
+        return selectedGenomes.Last();
     }
     public Population Selection(int n)
     {
-        List<Genome> selected = new();
+        List<Genome> selectedGenomes = new();
         for (int i = 0; i < n; i++)
         {
-            selected.Add(Select(selected));
+            var selectedOne = Select(selectedGenomes);
+            selectedGenomes.Add(selectedOne);
+            selected[population.IndexOf(selectedOne)] = true;
         }
         return new Population()
         {
             geneMinValues = geneMinValues,
             geneMaxValues = geneMaxValues,
-            population = selected
+            population = selectedGenomes
         };
     }
 
@@ -144,6 +174,7 @@ public class Population
         Population nextGeneration = Selection(elitism);
         nextGeneration.CrossoverPopulation(population.Count - elitism);
         nextGeneration.MutatePopulation(mutationRate);
+        nextGeneration.MakeSelections();
         return nextGeneration;
     }
 }
