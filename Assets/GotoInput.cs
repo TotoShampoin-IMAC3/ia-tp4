@@ -6,18 +6,6 @@ public class GotoInput : MonoBehaviour
 {
     int value = 0;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     void Refresh()
     {
         GetComponent<TMPro.TMP_InputField>().text = value.ToString();

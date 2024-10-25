@@ -9,9 +9,6 @@ public class FishManager : MonoBehaviour
     readonly List<Population> generations = new();
     readonly List<Fish> fishes = new();
 
-    // List<float> geneMinValues = new List<float> { .5f, 0f };
-    // List<float> geneMaxValues = new List<float> { 2f, 360f };
-
     public GameObject fishPrefab;
 
     public float fitSize = 1f;
@@ -23,12 +20,10 @@ public class FishManager : MonoBehaviour
 
     public int currentGeneration;
 
-    // Start is called before the first frame update
     void Start()
     {
         currentGeneration = 0;
         generations.Add(new Population());
-        // generations[0].InitializeGeneMaxValues(new List<int> { 3, 6 });
         generations[currentGeneration].InitializeGeneRanges(new List<Tuple<float, float>> {
             new(.5f, 2f), // size
             new(0f, 360f), // colorHue
@@ -36,11 +31,6 @@ public class FishManager : MonoBehaviour
         generations[currentGeneration].InitializePopulation(size);
 
         ShowGeneration(currentGeneration);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
     }
 
     public bool IsLastGeneration()
@@ -96,7 +86,7 @@ public class FishManager : MonoBehaviour
             fishes.Clear();
 
             Population populationToShow = generations[index];
-            List<Genome> population = populationToShow.population;//.OrderBy(genome => genome.fitness).ToList();
+            List<Genome> population = populationToShow.population;
             for (int i = 0; i < population.Count; i++)
             {
                 Fish fish = Instantiate(fishPrefab).GetComponent<Fish>();
@@ -105,9 +95,7 @@ public class FishManager : MonoBehaviour
                 fish.ApplySelected(populationToShow.IsSelected(population[i]));
                 fish.Place(
                     Mathf.Lerp(Mathf.PI * -(.5f - .125f), Mathf.PI * (.5f - .125f), (float)i / population.Count),
-                    // Mathf.Lerp(0, 2 * Mathf.PI, (float)i / population.Count),
                     UnityEngine.Random.Range(0, 2 * Mathf.PI),
-                    // 10f
                     UnityEngine.Random.Range(5f, 12f)
                 );
                 fishes.Add(fish);

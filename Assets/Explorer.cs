@@ -11,17 +11,10 @@ public class Explorer : MonoBehaviour
     public Image colorRenderer;
     public Button nextButton;
 
-    // Start is called before the first frame update
     void Start()
     {
         gotoInput.SetValue(0);
         UpdateColorHue(0);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public void Goto()

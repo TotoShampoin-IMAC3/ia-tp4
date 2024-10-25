@@ -10,13 +10,6 @@ public class Genome
     public List<float> genes = new();
     public float fitness;
 
-    private Dictionary<string, UnityEventBase> events = new();
-
-    public Genome()
-    {
-        events.Add("genesChanged", new UnityEvent<List<float>>());
-    }
-
     public void Evaluation(Func<Genome, float> fitnessFunction)
     {
         fitness = fitnessFunction(this);
@@ -40,15 +33,6 @@ public class Genome
             child.genes.Add(UnityEngine.Random.Range(0, 2) == 0 ? parent1.genes[i] : parent2.genes[i]);
         }
         return child;
-    }
-
-    public void On<T>(string eventName, UnityAction<T> action)
-    {
-        if (events.ContainsKey(eventName))
-        {
-            UnityEvent<T> unityEvent = events[eventName] as UnityEvent<T>;
-            unityEvent.AddListener(action);
-        }
     }
 }
 
@@ -102,12 +86,6 @@ public class Population
 
     public Genome Select(List<Genome> excluded)
     {
-        // return population
-        //     .Except(excluded)
-        //     .OrderByDescending(genome => genome.fitness)
-        //     .First();
-        // TODO: Implement a better selection algorithm
-
         List<Genome> selectedGenomes = population
             .Where(genome => !excluded.Contains(genome))
             .ToList();
@@ -165,7 +143,6 @@ public class Population
             Genome parent2 = population[UnityEngine.Random.Range(0, population.Count)];
             newPopulation.Add(Genome.Crossover(parent1, parent2));
         }
-        // population = newPopulation;
         population.AddRange(newPopulation);
     }
 

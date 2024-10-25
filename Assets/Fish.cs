@@ -16,21 +16,6 @@ public class Fish : MonoBehaviour
 
     public MeshRenderer fishRenderer;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        genome.On("genesChanged", (List<float> genes) =>
-        {
-            ApplyGenotype();
-        });
-
-        // text = GetComponentInChildren<TextMeshPro>();
-
-        // angleAlpha = Random.Range(0, 2 * Mathf.PI);
-        // angleBeta = Random.Range(-Mathf.PI / 2, Mathf.PI / 2);
-    }
-
-    // Update is called once per frame
     void Update()
     {
         var time = Time.time;
