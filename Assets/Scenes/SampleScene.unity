@@ -236,10 +236,10 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 15, y: 15, z: 15}
+  m_LocalScale: {x: 1.0714285, y: 1.0714285, z: 1.0714285}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1689841943}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &152519598
 GameObject:
@@ -903,7 +903,7 @@ GameObject:
   - component: {fileID: 725505460}
   - component: {fileID: 725505464}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: HUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3553,7 +3553,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 14, y: 14, z: 14}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 122657529}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1708431518
@@ -3835,11 +3836,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 725505463}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 400, y: 269}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -180, y: -30}
   m_SizeDelta: {x: 24, y: 24}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1, y: 1}
 --- !u!1 &1827376570
 GameObject:
   m_ObjectHideFlags: 0
@@ -4599,8 +4600,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 1264540492}
   - {fileID: 705507995}
+  - {fileID: 1689841943}
+  - {fileID: 725505463}
   - {fileID: 983084142}
   - {fileID: 1840459104}
-  - {fileID: 725505463}
-  - {fileID: 1689841943}
-  - {fileID: 122657529}

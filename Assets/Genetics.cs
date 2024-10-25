@@ -64,6 +64,8 @@ public class Genome<GeneType> where GeneType : IComparable
     }
 }
 
+
+
 /// <summary>
 ///     Represents one generation of a population of individuals, as well as the gene ranges.
 /// </summary>

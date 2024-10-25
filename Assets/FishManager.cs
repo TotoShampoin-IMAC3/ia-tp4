@@ -120,19 +120,28 @@ public class FishManager : MonoBehaviour
     {
         if (i < 0) i = (generations.Count + i) % generations.Count;
 
-        // We use the Lorentzian function to calculate the fitness of each gene
-        // And we multiply them to get the final fitness
+        //  FITNESS FUNCTION HERE
+        //      We use the Lorentzian function to calculate the fitness of each gene
+        //      And we multiply them to get the final fitness
+        //      ~ The Lorentzian function is 1 / (1 + (x - x0)^2)
         generations[i].EvaluatePopulation((Genome<float> genome) =>
         {
+            const float hueResize = 10f;
+
             float size = genome.genes[0];
-            float colorHue = genome.genes[1] / 360f * 10f;
+            float colorHue = genome.genes[1] / 360f * hueResize;
             float speed = genome.genes[2];
             float bowlRadius = genome.genes[3];
 
-            float fitColorHue = this.fitColorHue / 360f * 10f;
+            float fitColorHue = this.fitColorHue / 360f * hueResize;
+
+            float distanceToColor = Mathf.Min(
+                Mathf.Abs(colorHue - fitColorHue),
+                hueResize - Mathf.Abs(colorHue - fitColorHue)
+            );
 
             float sizeFitness = 1f / (1f + Mathf.Pow(size - fitSize, 2));
-            float colorFitness = 1f / (1f + Mathf.Pow(Mathf.Min(Mathf.Abs(colorHue - fitColorHue), 10f - Mathf.Abs(colorHue - fitColorHue)), 2));
+            float colorFitness = 1f / (1f + Mathf.Pow(distanceToColor, 2));
             float speedFitness = 1f / (1f + Mathf.Pow(speed - fitSpeed, 2));
             float radiusFitness = 1f / (1f + Mathf.Pow(bowlRadius - fitBowlRadius, 2));
 
