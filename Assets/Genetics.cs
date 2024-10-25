@@ -8,37 +8,35 @@ using UnityEngine.Events;
 /* Genetic Algorithm implementation */
 
 /// <summary>
-/// Represents an individual genome in a genetic algorithm, with a genotype and fitness value.
+///     Represents an individual genome in a genetic algorithm, with a genotype and fitness value.
 /// </summary>
-/// <typeparam name="GeneType">The type of the gene, which must implement IComparable.</typeparam>
+/// <typeparam name="GeneType">
+///     The type of the gene, which must implement IComparable.
+/// </typeparam>
 public class Genome<GeneType> where GeneType : IComparable
 {
     public List<GeneType> genes = new();
     public float fitness;
 
     /// <summary>
-    /// Evaluates the fitness of the genome using a fitness function.
+    ///     Evaluates the fitness of the genome using a fitness function.
     /// </summary>
     /// <param name="fitnessFunction">
-    /// A function that takes a genome and returns its fitness.
+    ///     A function that takes a genome and returns its fitness.
     /// </param>
     public void Evaluation(Func<Genome<GeneType>, float> fitnessFunction)
     {
         fitness = fitnessFunction(this);
     }
     /// <summary>
-    /// Mutates the genome by changing some of its genes randomly.
+    ///     Mutates the genome by changing some of its genes randomly.
     /// </summary>
-    /// <param name="mutationProbability"></param>
-    /// <param name="geneMinValues"></param>
-    /// <param name="geneMaxValues"></param>
     public void Mutate(float mutationProbability, List<GeneType> geneMinValues, List<GeneType> geneMaxValues)
     {
         for (int i = 0; i < genes.Count; i++)
         {
             if (UnityEngine.Random.Range(0f, 1f) < mutationProbability)
             {
-                // genes[i] = UnityEngine.Random.Range(geneMinValues[i], geneMaxValues[i]);
                 genes[i] = (GeneType)Convert.ChangeType(
                     UnityEngine.Random.Range(
                         Convert.ToSingle(geneMinValues[i]),
@@ -50,12 +48,10 @@ public class Genome<GeneType> where GeneType : IComparable
         }
     }
     /// <summary>
-    /// Creates a new genome by combining the genes of two parent genomes.
+    ///     Creates a new genome by combining the genes of two parent genomes.
     /// </summary>
-    /// <param name="parent1"></param>
-    /// <param name="parent2"></param>
     /// <returns>
-    /// The child genome that the parents give birth to.
+    ///     The child genome that the parents give birth to.
     /// </returns>
     public static Genome<GeneType> Crossover(Genome<GeneType> parent1, Genome<GeneType> parent2)
     {
@@ -69,10 +65,10 @@ public class Genome<GeneType> where GeneType : IComparable
 }
 
 /// <summary>
-/// Represents one generation of a population of individuals, as well as the gene ranges.
+///     Represents one generation of a population of individuals, as well as the gene ranges.
 /// </summary>
 /// <typeparam name="GeneType">
-/// It remembers which individuals are selected for the next generation.
+///     It remembers which individuals are selected for the next generation.
 /// </typeparam>
 public class Population<GeneType> where GeneType : IComparable
 {
@@ -82,10 +78,10 @@ public class Population<GeneType> where GeneType : IComparable
     public List<bool> selected = new();
 
     /// <summary>
-    /// Initializes the gene ranges of the population.
+    ///     Initializes the gene ranges of the population.
     /// </summary>
     /// <param name="geneRanges">
-    /// A list of (min, max) tuples for each gene.
+    ///     A list of (min, max) tuples for each gene.
     /// </param>
     public void InitializeGeneRanges(List<Tuple<GeneType, GeneType>> geneRanges)
     {
@@ -93,9 +89,8 @@ public class Population<GeneType> where GeneType : IComparable
         geneMaxValues = geneRanges.Select(range => range.Item2).ToList();
     }
     /// <summary>
-    /// Initializes the population with random genomes.
+    ///     Initializes the population with random genomes.
     /// </summary>
-    /// <param name="populationSize"></param>
     public void InitializePopulation(int populationSize)
     {
         foreach (int _ in new int[populationSize])
@@ -105,7 +100,7 @@ public class Population<GeneType> where GeneType : IComparable
         MakeSelections();
     }
     /// <summary>
-    /// Marks all individuals in the population as unselected.
+    ///     Marks all individuals in the population as unselected.
     /// </summary>
     public void MakeSelections()
     {
@@ -113,10 +108,8 @@ public class Population<GeneType> where GeneType : IComparable
     }
 
     /// <summary>
-    /// Returns whether a genome is selected for the next generation.
+    ///     Returns whether a genome is selected for the next generation.
     /// </summary>
-    /// <param name="genome"></param>
-    /// <returns></returns>
     public bool IsSelected(Genome<GeneType> genome)
     {
         int index = population.IndexOf(genome);
@@ -128,17 +121,16 @@ public class Population<GeneType> where GeneType : IComparable
     }
 
     /// <summary>
-    /// Creates a new genome with random genes.
+    ///     Creates a new genome with random genes.
     /// </summary>
     /// <returns>
-    /// The new genome.
+    ///     The new genome.
     /// </returns>
     public Genome<GeneType> CreateGenome()
     {
         Genome<GeneType> genome = new();
         for (int i = 0; i < geneMaxValues.Count; i++)
         {
-            // genome.genes.Add(UnityEngine.Random.Range(geneMinValues[i], geneMaxValues[i]));
             genome.genes.Add((GeneType)Convert.ChangeType(
                 UnityEngine.Random.Range(
                     Convert.ToSingle(geneMinValues[i]),
@@ -151,14 +143,14 @@ public class Population<GeneType> where GeneType : IComparable
     }
 
     /// <summary>
-    /// Selects a genome from the population, excluding a list of genomes.
-    /// The selected genome is not marked as selected.
+    ///     Selects a genome from the population, excluding a list of genomes.
+    ///     The selected genome is not marked as selected.
     /// </summary>
     /// <param name="excluded">
-    /// A list of genomes that should not be selected.
+    ///     A list of genomes that should not be selected.
     /// </param>
     /// <returns>
-    /// The selected genome.
+    ///     The selected genome.
     /// </returns>
     public Genome<GeneType> Select(List<Genome<GeneType>> excluded)
     {
@@ -180,11 +172,10 @@ public class Population<GeneType> where GeneType : IComparable
         return selectedGenomes.Last();
     }
     /// <summary>
-    /// Selects a number of genomes from the population.
+    ///     Selects a number of genomes from the population.
     /// </summary>
-    /// <param name="amount"></param>
     /// <returns>
-    /// A new population with the selected genomes.
+    ///     A new population with the selected genomes.
     /// </returns>
     public Population<GeneType> Selection(int amount)
     {
@@ -204,9 +195,8 @@ public class Population<GeneType> where GeneType : IComparable
     }
 
     /// <summary>
-    /// Evaluates the fitness of the population using a fitness function.
+    ///     Evaluates the fitness of the population using a fitness function.
     /// </summary>
-    /// <param name="fitnessFunction"></param>
     public void EvaluatePopulation(Func<Genome<GeneType>, float> fitnessFunction)
     {
         foreach (Genome<GeneType> genome in population)
@@ -215,9 +205,8 @@ public class Population<GeneType> where GeneType : IComparable
         }
     }
     /// <summary>
-    /// Mutates the population by changing some of the genes of each genome randomly.
+    ///     Mutates the population by changing some of the genes of each genome randomly.
     /// </summary>
-    /// <param name="mutationProbability"></param>
     public void MutatePopulation(float mutationProbability)
     {
         foreach (Genome<GeneType> genome in population)
@@ -226,9 +215,8 @@ public class Population<GeneType> where GeneType : IComparable
         }
     }
     /// <summary>
-    /// Creates a new population by crossing over the genomes of the current population.
+    ///     Creates a new population by crossing over the genomes of the current population.
     /// </summary>
-    /// <param name="amountToAdd"></param>
     public void CrossoverPopulation(int amountToAdd)
     {
         List<Genome<GeneType>> newPopulation = new();
@@ -242,14 +230,13 @@ public class Population<GeneType> where GeneType : IComparable
     }
 
     /// <summary>
-    /// Creates the next generation of the population using elitism, mutation, and crossover.
+    ///     Creates the next generation of the population using elitism, mutation, and crossover.
     /// </summary>
     /// <param name="elitism">
-    /// The amount of genomes to take from this generation to the next.
+    ///     The amount of genomes to take from this generation to the next.
     /// </param>
-    /// <param name="mutationProbability"></param>
     /// <returns>
-    /// The next generation of the population.
+    ///     The next generation of the population.
     /// </returns>
     public Population<GeneType> NextGeneration(int elitism, float mutationProbability)
     {
