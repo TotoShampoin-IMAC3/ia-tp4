@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class FishManager : MonoBehaviour
 {
-    readonly List<Population> generations = new();
+    readonly List<Population<float>> generations = new();
     readonly List<Fish> fishes = new();
 
     public GameObject fishPrefab;
@@ -23,7 +23,7 @@ public class FishManager : MonoBehaviour
     void Start()
     {
         currentGeneration = 0;
-        generations.Add(new Population());
+        generations.Add(new Population<float>());
         generations[currentGeneration].InitializeGeneRanges(new List<Tuple<float, float>> {
             new(.5f, 2f), // size
             new(0f, 360f), // colorHue
@@ -85,8 +85,8 @@ public class FishManager : MonoBehaviour
             }
             fishes.Clear();
 
-            Population populationToShow = generations[index];
-            List<Genome> population = populationToShow.population;
+            Population<float> populationToShow = generations[index];
+            List<Genome<float>> population = populationToShow.population;
             for (int i = 0; i < population.Count; i++)
             {
                 Fish fish = Instantiate(fishPrefab).GetComponent<Fish>();
@@ -108,7 +108,7 @@ public class FishManager : MonoBehaviour
     {
         if (i < 0) i = (generations.Count + i) % generations.Count;
 
-        generations[i].EvaluatePopulation((Genome genome) =>
+        generations[i].EvaluatePopulation((Genome<float> genome) =>
         {
             float size = genome.genes[0];
             float colorHue = genome.genes[1] / 360f * 10f;

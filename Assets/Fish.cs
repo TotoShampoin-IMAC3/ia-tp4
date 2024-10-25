@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class Fish : MonoBehaviour
 {
-
-    public Genome genome = new();
+    public Genome<float> genome = new();
     private float size = 1f;
     private float colorHue = 0f;
 
