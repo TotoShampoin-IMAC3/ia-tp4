@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Fish : MonoBehaviour
 {
-    readonly static float bowlRadius = 10f;
 
     public Genome genome = new();
     private float size = 1f;
@@ -13,8 +12,9 @@ public class Fish : MonoBehaviour
 
     public float angleAlpha = 0;
     public float angleBeta = 0;
+    public float bowlRadius = 10f;
 
-    TextMeshPro text;
+    public MeshRenderer fishRenderer;
 
     // Start is called before the first frame update
     void Start()
@@ -24,7 +24,7 @@ public class Fish : MonoBehaviour
             ApplyGenotype();
         });
 
-        text = GetComponentInChildren<TextMeshPro>();
+        // text = GetComponentInChildren<TextMeshPro>();
 
         // angleAlpha = Random.Range(0, 2 * Mathf.PI);
         // angleBeta = Random.Range(-Mathf.PI / 2, Mathf.PI / 2);
@@ -45,16 +45,13 @@ public class Fish : MonoBehaviour
             bowlRadius * Mathf.Sin(angleBeta),
             bowlRadius * Mathf.Sin(angleAlpha + time + 0.1f) * Mathf.Cos(angleBeta)
         ));
-
-        text.transform.LookAt(Camera.main.transform);
-        text.transform.Rotate(0, 180, 0);
-        text.text = genome.fitness.ToString("F2");
     }
 
-    public void Place(float angleB, float angleA)
+    public void Place(float angleB, float angleA, float radius)
     {
         angleBeta = angleB;
         angleAlpha = angleA;
+        bowlRadius = radius;
     }
 
     public void ApplyGenotype()
@@ -68,11 +65,11 @@ public class Fish : MonoBehaviour
     public void ApplyPhenotype()
     {
         transform.localScale = new Vector3(size, size, size);
-        GetComponent<MeshRenderer>().material.color = Color.HSVToRGB(colorHue / 360, 1, 1);
+        fishRenderer.material.color = Color.HSVToRGB(colorHue / 360, 1, 1);
     }
 
     public void ApplySelected(bool selected)
     {
-        GetComponent<MeshRenderer>().material.SetColor("_FresnelColor", selected ? Color.white : Color.black);
+        fishRenderer.material.SetColor("_FresnelColor", selected ? Color.white : Color.black);
     }
 }

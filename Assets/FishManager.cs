@@ -104,9 +104,11 @@ public class FishManager : MonoBehaviour
                 fish.ApplyGenotype();
                 fish.ApplySelected(populationToShow.IsSelected(population[i]));
                 fish.Place(
-                    i / ((float)population.Count) * Mathf.PI - Mathf.PI / 2,
-                    // UnityEngine.Random.Range(0, 2 * Mathf.PI)
-                    i / ((float)population.Count) * 2 * Mathf.PI
+                    Mathf.Lerp(Mathf.PI * -(.5f - .125f), Mathf.PI * (.5f - .125f), (float)i / population.Count),
+                    // Mathf.Lerp(0, 2 * Mathf.PI, (float)i / population.Count),
+                    UnityEngine.Random.Range(0, 2 * Mathf.PI),
+                    // 10f
+                    UnityEngine.Random.Range(5f, 12f)
                 );
                 fishes.Add(fish);
                 fish.transform.parent = transform;
